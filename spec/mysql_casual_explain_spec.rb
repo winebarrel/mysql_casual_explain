@@ -9,6 +9,8 @@ RSpec.describe MysqlCasualExplain do
     rescue Mysql2::Error::ConnectionError
       sleep 1
     end
+
+    ActiveRecord::Base.connection.execute('ANALYZE TABLE actor')
   end
 
   specify 'no problem' do
@@ -29,7 +31,7 @@ RSpec.describe MysqlCasualExplain do
       +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
       | id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
       +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
-      |  1 | SIMPLE      | actor | NULL       | \e[1m\e[31mALL\e[0m  | \e[1m\e[31mNULL\e[0m          | \e[1m\e[31mNULL\e[0m | NULL    | NULL |   23 |    100.0 | NULL  |
+      |  1 | SIMPLE      | actor | NULL       | \e[1m\e[31mALL\e[0m  | \e[1m\e[31mNULL\e[0m          | \e[1m\e[31mNULL\e[0m | NULL    | NULL |  200 |    100.0 | NULL  |
       +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
       1 row in set (0.00 sec)
     SQL
