@@ -35,7 +35,6 @@ ActiveRecord::Base.establish_connection(
   database: 'employees'
 )
 
-
 class Employee < ActiveRecord::Base; end
 
 puts Employee.all.explain
