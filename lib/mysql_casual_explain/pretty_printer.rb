@@ -2,32 +2,40 @@
 
 module MysqlCasualExplain
   module PrettyPrinter
-    COLUMNS = %i[
-      id
-      select_type
-      table
-      type
-      possible_keys
-      key
-      key_len
-      ref
-      rows
-      extra
-    ].freeze
-
     BOLD = ActiveSupport::LogSubscriber::BOLD
     RED = ActiveSupport::LogSubscriber::RED
     CLEAR = ActiveSupport::LogSubscriber::CLEAR
 
-    def build_cells(items, widths)
-      items, widths = _colorize_items(items, widths) if items.first != 'id'
-      super(items, widths)
+    def pp(result, elapsed)
+      widths    = compute_column_widths(result)
+      separator = build_separator(widths)
+
+      pp = []
+
+      pp << separator
+      pp << build_cells(result.columns, result.columns, widths)
+      pp << separator
+
+      result.rows.each do |row|
+        pp << build_cells(result.columns, row, widths)
+      end
+
+      pp << separator
+      pp << build_footer(result.rows.length, elapsed)
+
+      pp.join("\n") + "\n"
     end
 
     private
 
-    def _colorize_items(items, widths)
-      item_by_column = COLUMNS.zip(items).to_h
+    def build_cells(columns, items, widths)
+      items, widths = _colorize_items(columns, items, widths) if items.first != 'id'
+      super(items, widths)
+    end
+
+    def _colorize_items(columns, items, widths)
+      columns = columns.map(&:downcase).map(&:to_sym)
+      item_by_column = columns.zip(items).to_h
       warnings_by_column = MysqlCasualExplain.warnings_by_column
 
       new_items = []

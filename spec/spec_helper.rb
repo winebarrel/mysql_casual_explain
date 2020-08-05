@@ -2,6 +2,8 @@
 
 require 'bundler/setup'
 require 'mysql_casual_explain'
+require 'active_record'
+require 'models'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
