@@ -37,6 +37,9 @@ ActiveRecord::Base.establish_connection(
 class Employee < ActiveRecord::Base; end
 
 puts Employee.all.explain
+```
+
+![](https://user-images.githubusercontent.com/117768/89421006-7656dd00-d76e-11ea-844d-e0dd43ef8460.png)
 
 ## Test
 
