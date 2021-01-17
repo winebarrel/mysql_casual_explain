@@ -4,6 +4,7 @@ Highlight problematic MySQL explain results.
 
 Inspired by [MySQLCasualLog.pm](https://gist.github.com/kamipo/839e8a5b6d12bddba539).
 
+[![Gem Version](https://badge.fury.io/rb/mysql_casual_explain.svg)](https://badge.fury.io/rb/mysql_casual_explain)
 [![Build Status](https://github.com/winebarrel/mysql_casual_explain/workflows/test/badge.svg?branch=master)](https://github.com/winebarrel/mysql_casual_explain/actions)
 
 ## Installation
