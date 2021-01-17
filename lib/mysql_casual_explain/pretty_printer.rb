@@ -23,7 +23,7 @@ module MysqlCasualExplain
       pp << separator
       pp << build_footer(result.rows.length, elapsed)
 
-      pp.join("\n") + "\n"
+      "#{pp.join("\n")}\n"
     end
 
     private
