@@ -4,6 +4,8 @@ Highlight problematic MySQL explain results.
 
 Inspired by [MySQLCasualLog.pm](https://gist.github.com/kamipo/839e8a5b6d12bddba539).
 
+[![Build Status](https://github.com/winebarrel/mysql_casual_explain/workflows/test/badge.svg?branch=master)](https://github.com/winebarrel/mysql_casual_explain/actions)
+
 ## Installation
 
 Add this line to your application's Gemfile:
