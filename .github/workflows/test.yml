@@ -1,0 +1,47 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: budougumi0617/mysql-sakila:5.7
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "1"
+        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 1s --health-timeout 3s --health-retries 60
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby:
+          - 2.5
+          - 2.6
+          - 2.7
+        gemfile:
+          - gemfiles/ar52.gemfile
+          - gemfiles/ar60.gemfile
+    env:
+      DATABASE_URL: mysql2://root@127.0.0.1/sakila
+      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - uses: actions/cache@v2
+        with:
+          path: gemfiles/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ matrix.ruby }}-${{ matrix.gemfile }}
+          restore-keys: |
+            ${{ runner.os }}-gems-${{ matrix.ruby }}-${{ matrix.gemfile }}
+      - name: Setup dependencies
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+      - name: Run tests
+        run: bundle exec rake
