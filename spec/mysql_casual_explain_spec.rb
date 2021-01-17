@@ -10,7 +10,9 @@ RSpec.describe MysqlCasualExplain do
       sleep 1
     end
 
-    ActiveRecord::Base.connection.execute('ANALYZE TABLE actor')
+    %w[actor actor_info].each do |t|
+      ActiveRecord::Base.connection.execute("ANALYZE TABLE #{t}")
+    end
   end
 
   specify 'no problem' do
