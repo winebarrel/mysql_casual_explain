@@ -22,9 +22,14 @@ jobs:
           - 2.5
           - 2.6
           - 2.7
+          - 3.0
         gemfile:
           - gemfiles/ar52.gemfile
           - gemfiles/ar60.gemfile
+          - gemfiles/ar61.gemfile
+        exclude:
+          - ruby: 3.0
+            gemfile: gemfiles/ar52.gemfile
     env:
       DATABASE_URL: mysql2://root@127.0.0.1/sakila
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
