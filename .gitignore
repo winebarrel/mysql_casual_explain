@@ -11,3 +11,6 @@
 .rspec_status
 
 /test.rb
+
+# Appraisal Gemfile.lock
+/gemfiles/*.lock
