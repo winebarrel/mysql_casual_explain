@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     mysql_casual_explain (1.0.0)
-      activerecord
+      activerecord (>= 5.2)
 
 GEM
   remote: https://rubygems.org/
