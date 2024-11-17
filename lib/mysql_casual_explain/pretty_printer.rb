@@ -2,10 +2,6 @@
 
 module MysqlCasualExplain
   module PrettyPrinter
-    BOLD = ActiveSupport::LogSubscriber::BOLD
-    RED = ActiveSupport::LogSubscriber::RED
-    CLEAR = ActiveSupport::LogSubscriber::CLEAR
-
     def pp(result, elapsed)
       widths    = compute_column_widths(result)
       separator = build_separator(widths)
@@ -40,15 +36,15 @@ module MysqlCasualExplain
 
       new_items = []
       new_widths = []
-      extra_len = "#{BOLD}#{RED}#{CLEAR}".length
+      extra_len = ActiveSupport::LogSubscriber.new.send(:color, '', :red, bold: true).length
 
       item_by_column.each_with_index do |(column, item), i|
         item = 'NULL' if item.nil?
         warnings = warnings_by_column.fetch(column, [])
 
         if warnings.any? { |w| w.call(item) }
-          new_items << "#{BOLD}#{RED}#{item}#{CLEAR}"
-          new_widths << widths[i] + extra_len
+          new_items << ActiveSupport::LogSubscriber.new.send(:color, item, :red, bold: true)
+          new_widths << (widths[i] + extra_len)
         else
           new_items << item
           new_widths << widths[i]

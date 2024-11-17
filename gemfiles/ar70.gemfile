@@ -8,6 +8,6 @@ gem "rspec", "~> 3.0"
 gem "rubocop", ">= 1.68"
 gem "rubocop-rake"
 gem "rubocop-rspec"
-gem "activerecord", "~> 6.1"
+gem "activerecord", "~> 7.0"
 
 gemspec path: "../"

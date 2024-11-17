@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe MysqlCasualExplain do
+  let(:explain_prefix) { ActiveRecord.version >= '7.0' ? 'EXPLAIN' : 'EXPLAIN for:' }
   before(:all) do
     ActiveRecord::Base.establish_connection(ENV.fetch('DATABASE_URL'))
 
@@ -16,8 +17,8 @@ RSpec.describe MysqlCasualExplain do
   end
 
   specify 'no problem' do
-    expect(Actor.where(actor_id: 1).explain.sub(/\s*\(\d+\.\d+ sec\)/, '')).to eq <<~SQL
-      EXPLAIN for: SELECT `actor`.* FROM `actor` WHERE `actor`.`actor_id` = 1
+    expect(Actor.where(actor_id: 1).explain.inspect.to_s.sub(/\s*\(\d+\.\d+ sec\)/, '')).to eq <<~SQL
+      #{explain_prefix} SELECT `actor`.* FROM `actor` WHERE `actor`.`actor_id` = 1
       +----+-------------+-------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
       | id | select_type | table | partitions | type  | possible_keys | key     | key_len | ref   | rows | filtered | Extra |
       +----+-------------+-------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
@@ -28,8 +29,8 @@ RSpec.describe MysqlCasualExplain do
   end
 
   specify 'have a problem' do
-    expect(Actor.all.explain.sub(/\s*\(\d+\.\d+ sec\)/, '')).to eq <<~SQL
-      EXPLAIN for: SELECT `actor`.* FROM `actor`
+    expect(Actor.all.explain.inspect.to_s.sub(/\s*\(\d+\.\d+ sec\)/, '')).to eq <<~SQL
+      #{explain_prefix} SELECT `actor`.* FROM `actor`
       +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
       | id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
       +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
@@ -40,8 +41,8 @@ RSpec.describe MysqlCasualExplain do
   end
 
   specify 'have a problem (multi line)' do
-    expect(Actor.joins('NATURAL JOIN actor_info').all.explain.sub(/\s*\(\d+\.\d+ sec\)/, '')).to eq <<~SQL
-      EXPLAIN for: SELECT `actor`.* FROM `actor` NATURAL JOIN actor_info
+    expect(Actor.joins('NATURAL JOIN actor_info').all.explain.inspect.to_s.sub(/\s*\(\d+\.\d+ sec\)/, '')).to eq <<~SQL
+      #{explain_prefix} SELECT `actor`.* FROM `actor` NATURAL JOIN actor_info
       +----+--------------------+------------+------------+--------+-----------------------------------+-------------+---------+----------------------------------------------------------------------+------+----------+----------------+
       | id | select_type        | table      | partitions | type   | possible_keys                     | key         | key_len | ref                                                                  | rows | filtered | Extra          |
       +----+--------------------+------------+------------+--------+-----------------------------------+-------------+---------+----------------------------------------------------------------------+------+----------+----------------+
