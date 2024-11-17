@@ -1,14 +1,8 @@
-FROM rubylang/ruby:2.5-bionic
-
-RUN apt-get update && \
-  apt-get install -y \
-  mysql-client \
-  libmysqlclient-dev \
-  rubygems \
-  curl
+FROM ruby:3.3
 
 COPY ./ /mnt/
 WORKDIR /mnt
+RUN git config --global --add safe.directory /mnt
 RUN gem update bundler -f && \
   bundle install && \
   bundle exec appraisal install

@@ -1,13 +1,21 @@
 # frozen_string_literal: true
 
-appraise 'ar52' do
-  gem 'activerecord', '~> 5.2.1'
-end
-
-appraise 'ar60' do
-  gem 'activerecord', '~> 6.0.3'
-end
-
 appraise 'ar61' do
   gem 'activerecord', '~> 6.1'
+end
+
+appraise 'ar70' do
+  gem 'activerecord', '~> 7.0'
+end
+
+appraise 'ar71' do
+  gem 'activerecord', '~> 7.1'
+end
+
+appraise 'ar72' do
+  gem 'activerecord', '~> 7.2'
+end
+
+appraise 'ar80' do
+  gem 'activerecord', '~> 8.0'
 end
