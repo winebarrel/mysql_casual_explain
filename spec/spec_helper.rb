@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+
+# NOTE: Fix for "uninitialized constant ActiveSupport::LoggerThreadSafeLevel::Logger"
+require 'logger'
+
 require 'mysql_casual_explain'
 require 'active_record'
 require 'models'
